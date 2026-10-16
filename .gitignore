@@ -1,0 +1,7 @@
+# local scratch / preview artifacts — never commit
+web-preview/
+preview-v1/
+preview-v2/
+checks.json
+*.pdf
+__pycache__/

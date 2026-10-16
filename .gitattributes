@@ -1,0 +1,7 @@
+# 统一换行符，避免跨平台克隆时文件被整篇改写
+* text=auto eol=lf
+
+*.png binary
+*.jpg binary
+*.pptx binary
+*.pdf binary

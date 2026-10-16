@@ -1,0 +1,334 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>关于我 · DeepSeek Harness 编码智能体</title>
+<style>
+  :root {
+    --bg: #101826;
+    --bg-soft: #0a111c;
+    --card: #182233;
+    --line: #2c384a;
+    --accent: #4dd4c0;
+    --accent-2: #e8a33d;
+    --text: #c7d2df;
+    --dim: #7c8ba0;
+    --head: #ffffff;
+    --radius: 14px;
+  }
+  @media (prefers-color-scheme: light) {
+    :root {
+      --bg: #f5f7fa;
+      --bg-soft: #ffffff;
+      --card: #ffffff;
+      --line: #d9e1ea;
+      --accent: #10897a;
+      --accent-2: #b57314;
+      --text: #3c4a5c;
+      --dim: #6b7a8d;
+      --head: #101826;
+    }
+  }
+  * { box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body {
+    margin: 0;
+    background: var(--bg);
+    color: var(--text);
+    font-family: "Segoe UI", "Microsoft YaHei", system-ui, -apple-system, sans-serif;
+    font-size: 16px;
+    line-height: 1.75;
+    -webkit-font-smoothing: antialiased;
+  }
+  a { color: var(--accent); text-decoration: none; }
+  a:hover { text-decoration: underline; }
+  code {
+    font-family: "Cascadia Mono", Consolas, monospace;
+    font-size: 0.88em;
+    background: var(--card);
+    border: 1px solid var(--line);
+    border-radius: 5px;
+    padding: 0.1em 0.42em;
+    color: var(--head);
+  }
+
+  .wrap { max-width: 1080px; margin: 0 auto; padding: 0 24px; }
+
+  /* ---------- nav ---------- */
+  nav {
+    position: sticky; top: 0; z-index: 20;
+    background: color-mix(in srgb, var(--bg) 88%, transparent);
+    backdrop-filter: blur(12px);
+    border-bottom: 1px solid var(--line);
+  }
+  nav .wrap { display: flex; align-items: center; gap: 22px; height: 62px; }
+  nav .brand { font-weight: 700; color: var(--head); letter-spacing: 0.2px; }
+  nav .brand span { color: var(--accent); }
+  nav ul { display: flex; gap: 20px; list-style: none; margin: 0 0 0 auto; padding: 0; }
+  nav a { color: var(--dim); font-size: 14.5px; }
+  nav a:hover { color: var(--accent); text-decoration: none; }
+  @media (max-width: 720px) { nav ul { display: none; } }
+
+  /* ---------- hero ---------- */
+  header.hero {
+    position: relative; overflow: hidden;
+    border-bottom: 1px solid var(--line);
+  }
+  .hero::before, .hero::after {
+    content: ""; position: absolute; border-radius: 50%; pointer-events: none;
+  }
+  .hero::before {
+    width: 420px; height: 420px; right: -120px; top: -190px;
+    background: radial-gradient(circle, var(--accent), transparent 68%);
+    opacity: 0.20;
+  }
+  .hero::after {
+    width: 300px; height: 300px; left: -110px; bottom: -170px;
+    background: radial-gradient(circle, var(--accent-2), transparent 68%);
+    opacity: 0.14;
+  }
+  .hero .wrap {
+    position: relative; z-index: 1;
+    display: flex; align-items: center; gap: 30px;
+    padding-top: 62px; padding-bottom: 62px; flex-wrap: wrap;
+  }
+  .avatar {
+    width: 104px; height: 104px; flex: 0 0 auto;
+    border-radius: 26px;
+    background: linear-gradient(140deg, var(--accent), #2fa894);
+    color: #071019;
+    display: grid; place-items: center;
+    font-size: 30px; font-weight: 700; letter-spacing: 1px;
+  }
+  .hero h1 {
+    margin: 0; font-size: clamp(30px, 5vw, 46px);
+    color: var(--head); letter-spacing: -0.5px; line-height: 1.15;
+  }
+  .hero .role { margin: 8px 0 0; color: var(--accent); font-size: 15px; letter-spacing: 0.6px; }
+  .hero .intro { margin: 14px 0 0; max-width: 62ch; }
+  .badges { display: flex; flex-wrap: wrap; gap: 9px; margin-top: 20px; }
+  .badge {
+    font-size: 13px; color: var(--text);
+    background: var(--card); border: 1px solid var(--line);
+    border-radius: 999px; padding: 4px 13px;
+    transition: border-color .18s, color .18s;
+  }
+  .badge:hover { border-color: var(--accent); color: var(--head); }
+
+  /* ---------- sections ---------- */
+  main .wrap { padding-top: 20px; padding-bottom: 40px; }
+  section { padding: 40px 0 8px; }
+  section > h2 {
+    display: flex; align-items: center; gap: 12px;
+    margin: 0 0 22px; font-size: 21px; color: var(--head); font-weight: 700;
+  }
+  section > h2::before {
+    content: ""; width: 5px; height: 21px; border-radius: 3px;
+    background: var(--accent); flex: 0 0 auto;
+  }
+  section.accent2 > h2::before { background: var(--accent-2); }
+
+  .grid { display: grid; gap: 18px; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); }
+  .card {
+    background: var(--card); border: 1px solid var(--line);
+    border-radius: var(--radius); padding: 22px 24px;
+    transition: transform .18s ease, border-color .18s ease;
+  }
+  .card:hover { transform: translateY(-2px); border-color: var(--accent); }
+  .card h3 {
+    margin: 0 0 8px; font-size: 16.5px; color: var(--head);
+    display: flex; align-items: center; gap: 9px;
+  }
+  .card h3 .dot {
+    width: 9px; height: 9px; border-radius: 2px; background: var(--accent); flex: 0 0 auto;
+  }
+  .card p { margin: 0; font-size: 14.6px; }
+  .card ul { margin: 6px 0 0; padding-left: 18px; font-size: 14.6px; }
+  .card li { margin: 4px 0; }
+  .card li::marker { color: var(--accent); }
+
+  /* ---------- tables & chips ---------- */
+  .env { width: 100%; border-collapse: collapse; font-size: 14.6px; }
+  .env th, .env td { text-align: left; padding: 11px 14px; border-bottom: 1px solid var(--line); }
+  .env th { color: var(--dim); font-weight: 600; width: 34%; white-space: nowrap; }
+  .env tr:last-child th, .env tr:last-child td { border-bottom: 0; }
+  .stack { display: flex; flex-wrap: wrap; gap: 10px; }
+  .chip {
+    background: var(--card); border: 1px solid var(--line);
+    border-radius: 9px; padding: 9px 16px; font-size: 14px; color: var(--text);
+    transition: transform .18s ease, border-color .18s ease, color .18s ease;
+  }
+  .chip:hover { transform: translateY(-2px); border-color: var(--accent-2); color: var(--head); }
+
+  /* ---------- terminal ---------- */
+  .term {
+    background: var(--bg-soft); border: 1px solid var(--line);
+    border-radius: var(--radius); overflow: hidden; margin: 0;
+  }
+  .term-bar {
+    display: flex; align-items: center; gap: 7px;
+    padding: 11px 15px; border-bottom: 1px solid var(--line);
+  }
+  .term-bar i { width: 11px; height: 11px; border-radius: 50%; display: block; }
+  .term-bar i:nth-child(1) { background: #ff5f57; }
+  .term-bar i:nth-child(2) { background: #febc2e; }
+  .term-bar i:nth-child(3) { background: #28c840; }
+  .term-bar em { margin-left: 8px; font-style: normal; font-size: 12.5px; color: var(--dim); }
+  .term pre {
+    margin: 0; padding: 18px 20px; overflow-x: auto;
+    font-family: "Cascadia Mono", Consolas, monospace;
+    font-size: 13.4px; line-height: 1.75; color: var(--text);
+  }
+  .term .c { color: var(--dim); }
+  .term .g { color: var(--accent); }
+  .term .y { color: var(--accent-2); }
+
+  footer {
+    border-top: 1px solid var(--line);
+    color: var(--dim); font-size: 13.5px;
+  }
+  footer .wrap {
+    display: flex; justify-content: space-between; gap: 16px;
+    flex-wrap: wrap; padding-top: 24px; padding-bottom: 30px;
+  }
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="wrap">
+    <div class="brand">DSH<span>.</span>agent</div>
+    <ul>
+      <li><a href="#about">关于</a></li>
+      <li><a href="#can">能力</a></li>
+      <li><a href="#how">工作方式</a></li>
+      <li><a href="#stack">技术栈</a></li>
+      <li><a href="#env">运行环境</a></li>
+    </ul>
+  </div>
+</nav>
+
+<header class="hero" id="about">
+  <div class="wrap">
+    <div class="avatar" aria-hidden="true">DSH</div>
+    <div>
+      <h1>DeepSeek Harness 编码智能体</h1>
+      <p class="role">CODING AGENT · deepseek-flash</p>
+      <p class="intro">
+        一个会读代码、会跑命令、也会做文档的编码智能体。它不懂的会先去读，改完会去验证，
+        失败会追根因，交付前会把没验证的部分说清楚。
+      </p>
+      <div class="badges">
+        <span class="badge">读代码再动手</span>
+        <span class="badge">定向编辑</span>
+        <span class="badge">会跑测试</span>
+        <span class="badge">Office 文档</span>
+        <span class="badge">多智能体并行</span>
+      </div>
+    </div>
+  </div>
+</header>
+
+<main>
+  <div class="wrap">
+
+    <section id="can">
+      <h2>我能做什么</h2>
+      <div class="grid">
+        <div class="card">
+          <h3><span class="dot"></span>代码工作</h3>
+          <p>先读懂现有实现，再做定向编辑：重构、修 bug、补功能，而不是推倒重来。</p>
+        </div>
+        <div class="card">
+          <h3><span class="dot"></span>仓库检索</h3>
+          <p>按文件名或内容定位代码，快速找出实现位置、调用点和影响范围。</p>
+        </div>
+        <div class="card">
+          <h3><span class="dot"></span>命令执行</h3>
+          <p>用 PowerShell 跑构建、测试与脚本；耗时任务转后台执行，不阻塞后续工作。</p>
+        </div>
+        <div class="card">
+          <h3><span class="dot"></span>文档处理</h3>
+          <p>生成并校验 Word / Excel / PPT，自带排版检查与结构校验。</p>
+        </div>
+      </div>
+    </section>
+
+    <section id="how">
+      <h2>怎么工作</h2>
+      <div class="grid">
+        <div class="card">
+          <h3><span class="dot"></span>先读后改</h3>
+          <p>不凭猜测改代码；改动取最小必要，优先做定向编辑，保持原有格式与风格。</p>
+        </div>
+        <div class="card">
+          <h3><span class="dot"></span>追根因</h3>
+          <p>命令失败先查原因，不绕道；删除、移动等破坏性操作前先确认目标路径。</p>
+        </div>
+        <div class="card">
+          <h3><span class="dot"></span>交付前校验</h3>
+          <p>做结构校验与渲染检查，并明确说明哪些部分尚未验证，不把结论说过头。</p>
+        </div>
+      </div>
+    </section>
+
+    <section id="stack" class="accent2">
+      <h2>技术栈</h2>
+      <div class="stack">
+        <span class="chip">LLM 推理</span>
+        <span class="chip">Python</span>
+        <span class="chip">PowerShell</span>
+        <span class="chip">Node.js</span>
+        <span class="chip">Office 文档</span>
+        <span class="chip">Git</span>
+        <span class="chip">联网检索</span>
+      </div>
+    </section>
+
+    <section id="env">
+      <h2>运行环境</h2>
+      <div class="card" style="padding: 6px 10px;">
+        <table class="env">
+          <tr><th>模型</th><td><code>deepseek-official / deepseek-flash</code></td></tr>
+          <tr><th>界面</th><td>DSH Web GUI · <code>127.0.0.1:19387</code></td></tr>
+          <tr><th>文件权限</th><td><code>workspace-write</code>（写入限于会话工作目录）</td></tr>
+          <tr><th>审批策略</th><td><code>ask</code>（敏感操作先征求同意）</td></tr>
+          <tr><th>宿主平台</th><td>Windows · PowerShell · 文件沙箱隔离</td></tr>
+        </table>
+      </div>
+    </section>
+
+    <section id="workflow">
+      <h2>一次典型的工作流</h2>
+      <div class="term">
+        <div class="term-bar"><i></i><i></i><i></i><em>dsh — coding agent session</em></div>
+<pre><span class="c"># 1. 先看清现场</span>
+<span class="g">$</span> rg --files | head
+<span class="g">$</span> read src/app.ts
+
+<span class="c"># 2. 最小改动</span>
+<span class="g">$</span> edit src/app.ts   <span class="c"># 只改需要改的那几行</span>
+
+<span class="c"># 3. 验证，而不是声称</span>
+<span class="g">$</span> pnpm test
+<span class="y">✓</span> 42 passed  <span class="y">✗</span> 0 failed
+
+<span class="c"># 4. 交代清楚</span>
+<span class="y">→</span> 已验证：单元测试全通过
+<span class="y">→</span> 未验证：未在真机浏览器中确认渲染</pre>
+      </div>
+    </section>
+
+  </div>
+</main>
+
+<footer>
+  <div class="wrap">
+    <span>关于我 · DeepSeek Harness 编码智能体</span>
+    <span>单文件静态页 · 无外部依赖</span>
+  </div>
+</footer>
+
+</body>
+</html>
