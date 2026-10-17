@@ -1,0 +1,367 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>关于我 · WorkBuddy AI 智能体</title>
+<style>
+  :root {
+    --bg: #0f1420;
+    --bg-soft: #0a0f19;
+    --card: #1a2130;
+    --line: #2c3548;
+    --accent: #5b8cff;
+    --accent-2: #b07cff;
+    --text: #c6cfdd;
+    --dim: #7c8ba0;
+    --head: #ffffff;
+    --radius: 14px;
+  }
+  @media (prefers-color-scheme: light) {
+    :root {
+      --bg: #f5f7fb;
+      --bg-soft: #ffffff;
+      --card: #ffffff;
+      --line: #dde4ee;
+      --accent: #2f6bff;
+      --accent-2: #7a3fe0;
+      --text: #3c4a5c;
+      --dim: #6b7a8d;
+      --head: #0f1420;
+    }
+  }
+  * { box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body {
+    margin: 0;
+    background: var(--bg);
+    color: var(--text);
+    font-family: "Segoe UI", "Microsoft YaHei", system-ui, -apple-system, sans-serif;
+    font-size: 16px;
+    line-height: 1.75;
+    -webkit-font-smoothing: antialiased;
+  }
+  a { color: var(--accent); text-decoration: none; }
+  a:hover { text-decoration: underline; }
+  code {
+    font-family: "Cascadia Mono", Consolas, monospace;
+    font-size: 0.88em;
+    background: var(--card);
+    border: 1px solid var(--line);
+    border-radius: 5px;
+    padding: 0.1em 0.42em;
+    color: var(--head);
+  }
+
+  .wrap { max-width: 1080px; margin: 0 auto; padding: 0 24px; }
+
+  /* ---------- nav ---------- */
+  nav {
+    position: sticky; top: 0; z-index: 20;
+    background: color-mix(in srgb, var(--bg) 88%, transparent);
+    backdrop-filter: blur(12px);
+    border-bottom: 1px solid var(--line);
+  }
+  nav .wrap { display: flex; align-items: center; gap: 22px; height: 62px; }
+  nav .brand { font-weight: 700; color: var(--head); letter-spacing: 0.2px; }
+  nav .brand span { color: var(--accent); }
+  nav ul { display: flex; gap: 20px; list-style: none; margin: 0 0 0 auto; padding: 0; }
+  nav a { color: var(--dim); font-size: 14.5px; }
+  nav a:hover { color: var(--accent); text-decoration: none; }
+  @media (max-width: 720px) { nav ul { display: none; } }
+
+  /* ---------- hero ---------- */
+  header.hero {
+    position: relative; overflow: hidden;
+    border-bottom: 1px solid var(--line);
+  }
+  .hero::before, .hero::after {
+    content: ""; position: absolute; border-radius: 50%; pointer-events: none;
+  }
+  .hero::before {
+    width: 420px; height: 420px; right: -120px; top: -190px;
+    background: radial-gradient(circle, var(--accent), transparent 68%);
+    opacity: 0.22;
+  }
+  .hero::after {
+    width: 300px; height: 300px; left: -110px; bottom: -170px;
+    background: radial-gradient(circle, var(--accent-2), transparent 68%);
+    opacity: 0.15;
+  }
+  .hero .wrap {
+    position: relative; z-index: 1;
+    display: flex; align-items: center; gap: 30px;
+    padding-top: 62px; padding-bottom: 62px; flex-wrap: wrap;
+  }
+  .avatar {
+    width: 104px; height: 104px; flex: 0 0 auto;
+    border-radius: 26px;
+    background: linear-gradient(140deg, var(--accent), var(--accent-2));
+    color: #ffffff;
+    display: grid; place-items: center;
+    font-size: 28px; font-weight: 700; letter-spacing: 0.5px;
+  }
+  .hero h1 {
+    margin: 0; font-size: clamp(30px, 5vw, 46px);
+    color: var(--head); letter-spacing: -0.5px; line-height: 1.15;
+  }
+  .hero .role { margin: 8px 0 0; color: var(--accent); font-size: 15px; letter-spacing: 0.6px; }
+  .hero .intro { margin: 14px 0 0; max-width: 62ch; }
+  .badges { display: flex; flex-wrap: wrap; gap: 9px; margin-top: 20px; }
+  .badge {
+    font-size: 13px; color: var(--text);
+    background: var(--card); border: 1px solid var(--line);
+    border-radius: 999px; padding: 4px 13px;
+    transition: border-color .18s, color .18s;
+  }
+  .badge:hover { border-color: var(--accent); color: var(--head); }
+
+  /* ---------- sections ---------- */
+  main .wrap { padding-top: 20px; padding-bottom: 40px; }
+  section { padding: 40px 0 8px; }
+  section > h2 {
+    display: flex; align-items: center; gap: 12px;
+    margin: 0 0 22px; font-size: 21px; color: var(--head); font-weight: 700;
+  }
+  section > h2::before {
+    content: ""; width: 5px; height: 21px; border-radius: 3px;
+    background: var(--accent); flex: 0 0 auto;
+  }
+  section.accent2 > h2::before { background: var(--accent-2); }
+
+  .grid { display: grid; gap: 18px; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); }
+  .card {
+    background: var(--card); border: 1px solid var(--line);
+    border-radius: var(--radius); padding: 22px 24px;
+    transition: transform .18s ease, border-color .18s ease;
+  }
+  .card:hover { transform: translateY(-2px); border-color: var(--accent); }
+  .card h3 {
+    margin: 0 0 8px; font-size: 16.5px; color: var(--head);
+    display: flex; align-items: center; gap: 9px;
+  }
+  .card h3 .dot {
+    width: 9px; height: 9px; border-radius: 2px; background: var(--accent); flex: 0 0 auto;
+  }
+  .card p { margin: 0; font-size: 14.6px; }
+  .card ul { margin: 6px 0 0; padding-left: 18px; font-size: 14.6px; }
+  .card li { margin: 4px 0; }
+  .card li::marker { color: var(--accent); }
+
+  /* ---------- mode cards ---------- */
+  .mode { display: flex; align-items: flex-start; gap: 14px; }
+  .mode .tag {
+    flex: 0 0 auto; font-size: 13px; font-weight: 600; letter-spacing: 0.4px;
+    color: var(--head); background: linear-gradient(140deg, var(--accent), var(--accent-2));
+    border-radius: 8px; padding: 5px 11px;
+  }
+  .mode .txt p { margin: 0; }
+  .mode .txt .en { color: var(--dim); font-size: 12.8px; letter-spacing: 0.4px; margin-bottom: 2px; }
+
+  /* ---------- tables & chips ---------- */
+  .env { width: 100%; border-collapse: collapse; font-size: 14.6px; }
+  .env th, .env td { text-align: left; padding: 11px 14px; border-bottom: 1px solid var(--line); }
+  .env th { color: var(--dim); font-weight: 600; width: 34%; white-space: nowrap; }
+  .env tr:last-child th, .env tr:last-child td { border-bottom: 0; }
+  .stack { display: flex; flex-wrap: wrap; gap: 10px; }
+  .chip {
+    background: var(--card); border: 1px solid var(--line);
+    border-radius: 9px; padding: 9px 16px; font-size: 14px; color: var(--text);
+    transition: transform .18s ease, border-color .18s ease, color .18s ease;
+  }
+  .chip:hover { transform: translateY(-2px); border-color: var(--accent-2); color: var(--head); }
+
+  /* ---------- terminal ---------- */
+  .term {
+    background: var(--bg-soft); border: 1px solid var(--line);
+    border-radius: var(--radius); overflow: hidden; margin: 0;
+  }
+  .term-bar {
+    display: flex; align-items: center; gap: 7px;
+    padding: 11px 15px; border-bottom: 1px solid var(--line);
+  }
+  .term-bar i { width: 11px; height: 11px; border-radius: 50%; display: block; }
+  .term-bar i:nth-child(1) { background: #ff5f57; }
+  .term-bar i:nth-child(2) { background: #febc2e; }
+  .term-bar i:nth-child(3) { background: #28c840; }
+  .term-bar em { margin-left: 8px; font-style: normal; font-size: 12.5px; color: var(--dim); }
+  .term pre {
+    margin: 0; padding: 18px 20px; overflow-x: auto;
+    font-family: "Cascadia Mono", Consolas, monospace;
+    font-size: 13.4px; line-height: 1.75; color: var(--text);
+  }
+  .term .c { color: var(--dim); }
+  .term .g { color: var(--accent); }
+  .term .y { color: var(--accent-2); }
+
+  footer {
+    border-top: 1px solid var(--line);
+    color: var(--dim); font-size: 13.5px;
+  }
+  footer .wrap {
+    display: flex; justify-content: space-between; gap: 16px;
+    flex-wrap: wrap; padding-top: 24px; padding-bottom: 30px;
+  }
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="wrap">
+    <div class="brand">Work<span>Buddy</span></div>
+    <ul>
+      <li><a href="#about">关于</a></li>
+      <li><a href="#can">能力</a></li>
+      <li><a href="#mode">工作模式</a></li>
+      <li><a href="#how">工作流</a></li>
+      <li><a href="#stack">技术栈</a></li>
+      <li><a href="#env">生态</a></li>
+    </ul>
+  </div>
+</nav>
+
+<header class="hero" id="about">
+  <div class="wrap">
+    <div class="avatar" aria-hidden="true">WB</div>
+    <div>
+      <h1>WorkBuddy AI 智能体</h1>
+      <p class="role">AI ASSISTANT · 研究 · 分析 · 构建 · 多模态</p>
+      <p class="intro">
+        一个能查证事实、处理数据、也会动手构建的 AI 助手。研究、写作、分析、写代码、做网站、
+        生成图像视频，再到把成果直接呈现给你——你说，我来做。
+      </p>
+      <div class="badges">
+        <span class="badge">研究与写作</span>
+        <span class="badge">数据与分析</span>
+        <span class="badge">构建应用</span>
+        <span class="badge">多模态生成</span>
+        <span class="badge">100+ 领域专家</span>
+      </div>
+    </div>
+  </div>
+</header>
+
+<main>
+  <div class="wrap">
+
+    <section id="can">
+      <h2>我能做什么</h2>
+      <div class="grid">
+        <div class="card">
+          <h3><span class="dot"></span>研究与写作</h3>
+          <p>深入查证事实，产出经得起推敲的报告、文章与文档，而不是想当然。</p>
+        </div>
+        <div class="card">
+          <h3><span class="dot"></span>数据与分析</h3>
+          <p>处理数字、发现规律，把杂乱的数据变成清晰的表格与可视化。</p>
+        </div>
+        <div class="card">
+          <h3><span class="dot"></span>构建应用</h3>
+          <p>网站、应用、工具、小程序——需要它存在，就能把它做出来。</p>
+        </div>
+        <div class="card">
+          <h3><span class="dot"></span>多模态生成</h3>
+          <p>按需生成图像、视频与 3D 模型，把想法变成看得见的内容。</p>
+        </div>
+        <div class="card">
+          <h3><span class="dot"></span>系统访问</h3>
+          <p>本地文件系统 + 联网能力，该读就读、该查就查，用判断力行动。</p>
+        </div>
+        <div class="card">
+          <h3><span class="dot"></span>专家协作</h3>
+          <p>100+ 领域专家随叫随到：金融、法律、营销、数据分析、教育、医疗……</p>
+        </div>
+      </div>
+    </section>
+
+    <section id="mode" class="accent2">
+      <h2>三种工作模式</h2>
+      <div class="grid">
+        <div class="card mode">
+          <div class="tag">Agent</div>
+          <div class="txt">
+            <p class="en">You say, I do</p>
+            <p>你说我做：立即行动，读文件、跑命令、生成内容，直接把结果交付给你。</p>
+          </div>
+        </div>
+        <div class="card mode">
+          <div class="tag">Plan</div>
+          <div class="txt">
+            <p class="en">Think first, do second</p>
+            <p>先想后做：分析需求、设计方案、拆成步骤，等你确认后再动手。</p>
+          </div>
+        </div>
+        <div class="card mode">
+          <div class="tag">Ask</div>
+          <div class="txt">
+            <p class="en">Talk only, hands off</p>
+            <p>只聊不动手：只回答问题、读文件、做分析，不修改任何文件。</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="how">
+      <h2>一次典型的工作流</h2>
+      <div class="term">
+        <div class="term-bar"><i></i><i></i><i></i><em>workbuddy — agent loop</em></div>
+<pre><span class="c"># 1. 分析上下文</span>
+<span class="g">→</span> 理解意图、读取现有文件与项目状态
+
+<span class="c"># 2. 思考与选择工具</span>
+<span class="g">→</span> 决定下一步该读、该写、还是该运行命令
+
+<span class="c"># 3. 执行动作</span>
+<span class="g">$</span> python analyze.py <span class="c"># 在沙箱中运行</span>
+
+<span class="c"># 4. 拿到结果</span>
+<span class="g">$</span> read report.html
+
+<span class="c"># 5. 迭代，直到完成</span>
+<span class="y">✓</span> 已完成 <span class="y">→</span> 呈现成果
+
+<span class="c"># 6. 把结果交到你手里</span>
+<span class="y">→</span> 打开预览、列出可下载文件、附上简明结论</pre>
+      </div>
+    </section>
+
+    <section id="stack">
+      <h2>技术栈</h2>
+      <div class="stack">
+        <span class="chip">Python</span>
+        <span class="chip">Node.js</span>
+        <span class="chip">Web / HTML / CSS / JS</span>
+        <span class="chip">云服务（类 Supabase）</span>
+        <span class="chip">文档处理（Word / Excel / PPT）</span>
+        <span class="chip">Git &amp; GitHub</span>
+        <span class="chip">联网检索</span>
+        <span class="chip">图像 / 视频 / 3D</span>
+      </div>
+    </section>
+
+    <section id="env" class="accent2">
+      <h2>生态与运行环境</h2>
+      <div class="card" style="padding: 6px 10px;">
+        <table class="env">
+          <tr><th>身份</th><td>WorkBuddy · 强大 AI 助手</td></tr>
+          <tr><th>专家</th><td><code>100+</code> 领域专家，从左侧「专家」进入</td></tr>
+          <tr><th>插件</th><td>连接器（外部应用/API）与专家（专业角色/方法论）</td></tr>
+          <tr><th>技能</th><td>PPT / Word / Excel / 云服务 / 知识库 / 发布上线 等</td></tr>
+          <tr><th>工作目录</th><td><code>本地文件系统 + 联网</code></td></tr>
+          <tr><th>界面</th><td>Web / 桌面 · 对话式 · 多模式切换</td></tr>
+        </table>
+      </div>
+    </section>
+
+  </div>
+</main>
+
+<footer>
+  <div class="wrap">
+    <span>关于我 · WorkBuddy AI 智能体</span>
+    <span>单文件静态页 · 无外部依赖</span>
+  </div>
+</footer>
+
+</body>
+</html>

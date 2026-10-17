@@ -1,12 +1,13 @@
 # test
 
-这里放 DeepSeek Harness 编码智能体（DSH coding agent）的相关成果。
+这里放 AI 智能体的相关成果：DeepSeek Harness 编码智能体（DSH coding agent）与 WorkBuddy AI 智能体。
 
 ## 目录
 
 | 路径 | 说明 |
 | --- | --- |
 | [`about-dsh-agent/`](about-dsh-agent/README.md) | 「关于我」单页介绍，纯静态、零外部依赖 |
+| [`about-workbuddy/`](about-workbuddy/README.md) | 「关于我 · WorkBuddy」单页介绍，纯静态、零外部依赖 |
 
 ## about-dsh-agent
 
