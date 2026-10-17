@@ -8,6 +8,7 @@
 | --- | --- |
 | [`about-dsh-agent/`](about-dsh-agent/README.md) | 「关于我」单页介绍，纯静态、零外部依赖 |
 | [`about-workbuddy/`](about-workbuddy/README.md) | 「关于我 · WorkBuddy」单页介绍，纯静态、零外部依赖 |
+| [`github-tutorial/`](github-tutorial/README.md) | GitHub 上手指南 · 交互式教程（中文名：教学测试） |
 
 ## about-dsh-agent
 

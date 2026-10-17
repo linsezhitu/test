@@ -1,0 +1,505 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>GitHub 上手指南 · 交互式教程</title>
+<style>
+  :root {
+    --bg: #0f1420;
+    --bg-soft: #0a0f19;
+    --card: #1a2130;
+    --line: #2c3548;
+    --accent: #5b8cff;
+    --accent-2: #b07cff;
+    --good: #28c840;
+    --bad: #ff5f57;
+    --text: #c6cfdd;
+    --dim: #7c8ba0;
+    --head: #ffffff;
+    --radius: 14px;
+  }
+  @media (prefers-color-scheme: light) {
+    :root {
+      --bg: #f5f7fb;
+      --bg-soft: #ffffff;
+      --card: #ffffff;
+      --line: #dde4ee;
+      --accent: #2f6bff;
+      --accent-2: #7a3fe0;
+      --text: #3c4a5c;
+      --dim: #6b7a8d;
+      --head: #0f1420;
+    }
+  }
+  * { box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body {
+    margin: 0;
+    background: var(--bg);
+    color: var(--text);
+    font-family: "Segoe UI", "Microsoft YaHei", system-ui, -apple-system, sans-serif;
+    font-size: 16px;
+    line-height: 1.75;
+    -webkit-font-smoothing: antialiased;
+  }
+  a { color: var(--accent); text-decoration: none; }
+  a:hover { text-decoration: underline; }
+  code {
+    font-family: "Cascadia Mono", Consolas, monospace;
+    font-size: 0.88em;
+    background: var(--card);
+    border: 1px solid var(--line);
+    border-radius: 5px;
+    padding: 0.1em 0.42em;
+    color: var(--head);
+  }
+
+  .wrap { max-width: 1080px; margin: 0 auto; padding: 0 24px; }
+
+  /* ---------- nav ---------- */
+  nav {
+    position: sticky; top: 0; z-index: 20;
+    background: color-mix(in srgb, var(--bg) 88%, transparent);
+    backdrop-filter: blur(12px);
+    border-bottom: 1px solid var(--line);
+  }
+  nav .wrap { display: flex; align-items: center; gap: 22px; height: 62px; }
+  nav .brand { font-weight: 700; color: var(--head); letter-spacing: 0.2px; }
+  nav .brand span { color: var(--accent); }
+  nav ul { display: flex; gap: 20px; list-style: none; margin: 0 0 0 auto; padding: 0; }
+  nav a { color: var(--dim); font-size: 14.5px; }
+  nav a:hover { color: var(--accent); text-decoration: none; }
+  @media (max-width: 720px) { nav ul { display: none; } }
+
+  /* ---------- hero ---------- */
+  header.hero {
+    position: relative; overflow: hidden;
+    border-bottom: 1px solid var(--line);
+  }
+  .hero::before, .hero::after {
+    content: ""; position: absolute; border-radius: 50%; pointer-events: none;
+  }
+  .hero::before {
+    width: 420px; height: 420px; right: -120px; top: -190px;
+    background: radial-gradient(circle, var(--accent), transparent 68%);
+    opacity: 0.22;
+  }
+  .hero::after {
+    width: 300px; height: 300px; left: -110px; bottom: -170px;
+    background: radial-gradient(circle, var(--accent-2), transparent 68%);
+    opacity: 0.15;
+  }
+  .hero .wrap {
+    position: relative; z-index: 1;
+    padding-top: 62px; padding-bottom: 62px;
+  }
+  .hero h1 {
+    margin: 0; font-size: clamp(30px, 5vw, 46px);
+    color: var(--head); letter-spacing: -0.5px; line-height: 1.15;
+  }
+  .hero .role { margin: 8px 0 0; color: var(--accent); font-size: 15px; letter-spacing: 0.6px; }
+  .hero .intro { margin: 14px 0 0; max-width: 66ch; }
+  .badges { display: flex; flex-wrap: wrap; gap: 9px; margin-top: 20px; }
+  .badge {
+    font-size: 13px; color: var(--text);
+    background: var(--card); border: 1px solid var(--line);
+    border-radius: 999px; padding: 4px 13px;
+  }
+
+  /* ---------- sections ---------- */
+  main .wrap { padding-top: 20px; padding-bottom: 40px; }
+  section { padding: 40px 0 8px; }
+  section > h2 {
+    display: flex; align-items: center; gap: 12px;
+    margin: 0 0 22px; font-size: 21px; color: var(--head); font-weight: 700;
+  }
+  section > h2::before {
+    content: ""; width: 5px; height: 21px; border-radius: 3px;
+    background: var(--accent); flex: 0 0 auto;
+  }
+  section.accent2 > h2::before { background: var(--accent-2); }
+  .lead { margin: -10px 0 20px; color: var(--dim); font-size: 14.8px; }
+
+  .grid { display: grid; gap: 18px; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); }
+  .card {
+    background: var(--card); border: 1px solid var(--line);
+    border-radius: var(--radius); padding: 22px 24px;
+    transition: transform .18s ease, border-color .18s ease;
+  }
+  .card:hover { transform: translateY(-2px); border-color: var(--accent); }
+  .card h3 {
+    margin: 0 0 8px; font-size: 16.5px; color: var(--head);
+    display: flex; align-items: center; gap: 9px;
+  }
+  .card h3 .dot {
+    width: 9px; height: 9px; border-radius: 2px; background: var(--accent); flex: 0 0 auto;
+  }
+  .card p { margin: 0; font-size: 14.6px; }
+  .card ul { margin: 6px 0 0; padding-left: 18px; font-size: 14.6px; }
+  .card li { margin: 4px 0; }
+  .card li::marker { color: var(--accent); }
+  .num {
+    display: inline-grid; place-items: center; width: 24px; height: 24px;
+    border-radius: 7px; background: linear-gradient(140deg, var(--accent), var(--accent-2));
+    color: #fff; font-size: 13px; font-weight: 700; margin-right: 8px;
+  }
+
+  /* ---------- table ---------- */
+  .tbl { width: 100%; border-collapse: collapse; font-size: 14.6px; }
+  .tbl th, .tbl td { text-align: left; padding: 11px 14px; border-bottom: 1px solid var(--line); }
+  .tbl th { color: var(--dim); font-weight: 600; }
+  .tbl tr:last-child th, .tbl tr:last-child td { border-bottom: 0; }
+  .tbl code { font-size: 0.85em; white-space: nowrap; }
+
+  /* ---------- terminal ---------- */
+  .term {
+    background: var(--bg-soft); border: 1px solid var(--line);
+    border-radius: var(--radius); overflow: hidden; margin: 0;
+  }
+  .term-bar {
+    display: flex; align-items: center; gap: 7px;
+    padding: 11px 15px; border-bottom: 1px solid var(--line);
+  }
+  .term-bar i { width: 11px; height: 11px; border-radius: 50%; display: block; }
+  .term-bar i:nth-child(1) { background: #ff5f57; }
+  .term-bar i:nth-child(2) { background: #febc2e; }
+  .term-bar i:nth-child(3) { background: #28c840; }
+  .term-bar em { margin-left: 8px; font-style: normal; font-size: 12.5px; color: var(--dim); }
+  .term pre {
+    margin: 0; padding: 18px 20px; overflow-x: auto; min-height: 120px;
+    font-family: "Cascadia Mono", Consolas, monospace;
+    font-size: 13.4px; line-height: 1.8; color: var(--text);
+  }
+  .term .c { color: var(--dim); }
+  .term .g { color: var(--accent); }
+  .term .y { color: var(--accent-2); }
+  .term .ok { color: var(--good); }
+  .cursor { display: inline-block; width: 8px; height: 15px; background: var(--accent); vertical-align: -2px; animation: blink 1s steps(1) infinite; }
+  @keyframes blink { 50% { opacity: 0; } }
+
+  /* ---------- buttons ---------- */
+  .btn {
+    background: linear-gradient(140deg, var(--accent), var(--accent-2));
+    color: #fff; border: none; border-radius: 9px; padding: 10px 22px;
+    font-size: 14.5px; font-weight: 600; cursor: pointer; font-family: inherit;
+    transition: filter .15s ease, transform .15s ease;
+  }
+  .btn:hover { filter: brightness(1.08); transform: translateY(-1px); }
+  .btn:disabled { opacity: 0.5; cursor: default; transform: none; }
+  .btn.ghost {
+    background: var(--card); color: var(--text); border: 1px solid var(--line); font-weight: 500;
+  }
+  .btn.ghost:hover { border-color: var(--accent); color: var(--head); }
+  .toolbar { display: flex; gap: 10px; margin-top: 14px; flex-wrap: wrap; }
+
+  /* ---------- quiz ---------- */
+  .quiz-q { margin: 0 0 20px; }
+  .quiz-q .q { font-size: 15.5px; color: var(--head); font-weight: 600; margin: 0 0 4px; }
+  .quiz-opt {
+    display: block; width: 100%; text-align: left;
+    background: var(--card); border: 1px solid var(--line); border-radius: 10px;
+    padding: 11px 16px; margin: 8px 0; cursor: pointer;
+    font-size: 14.6px; color: var(--text); font-family: inherit;
+    transition: border-color .15s ease, color .15s ease;
+  }
+  .quiz-opt:hover:not(.locked) { border-color: var(--accent); }
+  .quiz-opt.correct { border-color: var(--good); color: var(--good); }
+  .quiz-opt.wrong { border-color: var(--bad); color: var(--bad); }
+  .quiz-opt.locked { cursor: default; opacity: 0.82; }
+  .quiz-fb { display: none; margin: 4px 0 12px; font-size: 14px; }
+  .quiz-fb.show { display: block; }
+  .quiz-fb.ok { color: var(--good); }
+  .quiz-fb.no { color: var(--bad); }
+
+  footer {
+    border-top: 1px solid var(--line);
+    color: var(--dim); font-size: 13.5px;
+  }
+  footer .wrap {
+    display: flex; justify-content: space-between; gap: 16px;
+    flex-wrap: wrap; padding-top: 24px; padding-bottom: 30px;
+  }
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="wrap">
+    <div class="brand">Git<span>Hub</span> 入门</div>
+    <ul>
+      <li><a href="#what">认识</a></li>
+      <li><a href="#concept">概念</a></li>
+      <li><a href="#lab">实战演练</a></li>
+      <li><a href="#commands">命令速查</a></li>
+      <li><a href="#web">网页操作</a></li>
+      <li><a href="#quiz">小测验</a></li>
+    </ul>
+  </div>
+</nav>
+
+<header class="hero">
+  <div class="wrap">
+    <h1>从零上手 GitHub</h1>
+    <p class="role">INTERACTIVE TUTORIAL · 边看边动手</p>
+    <p class="intro">
+      不知道 Git 和 GitHub 是什么、怎么用？这个页面用最直白的方式带你走一遍：
+      先搞懂概念，再在下面的模拟终端里亲手「点」完一次完整的提交推送流程，最后做几道题检验一下。
+    </p>
+    <div class="badges">
+      <span class="badge">零基础友好</span>
+      <span class="badge">交互式终端演练</span>
+      <span class="badge">随堂小测验</span>
+      <span class="badge">单文件离线可用</span>
+    </div>
+  </div>
+</header>
+
+<main>
+  <div class="wrap">
+
+    <!-- 认识 Git 与 GitHub -->
+    <section id="what">
+      <h2>先分清两件事</h2>
+      <p class="lead">Git 和 GitHub 不是一回事，但通常一起出现。</p>
+      <div class="grid">
+        <div class="card">
+          <h3><span class="dot"></span>Git —— 版本管理工具</h3>
+          <p>装在你电脑上的一个程序，负责记录文件的每一次改动。你可以随时回到任意一个历史版本，就像游戏存档。</p>
+          <ul>
+            <li>在你本地电脑上运行</li>
+            <li>不需要联网也能用</li>
+            <li>核心动作：提交（commit）、分支（branch）</li>
+          </ul>
+        </div>
+        <div class="card">
+          <h3><span class="dot"></span>GitHub —— 托管网站</h3>
+          <p>一个网站，用来把 Git 仓库「存到云端」，方便备份、分享和多人协作。</p>
+          <ul>
+            <li>你的仓库存在 GitHub 服务器上</li>
+            <li>需要联网</li>
+            <li>核心动作：推送（push）、拉取（pull）、协作（PR）</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- 核心概念 -->
+    <section id="concept" class="accent2">
+      <h2>四个核心概念</h2>
+      <div class="grid">
+        <div class="card">
+          <h3><span class="dot"></span>仓库 · Repository</h3>
+          <p>一个项目的「文件夹 + 完整历史记录」。本地一份、GitHub 上一份（远程）。</p>
+        </div>
+        <div class="card">
+          <h3><span class="dot"></span>提交 · Commit</h3>
+          <p>给某一时刻的所有改动拍张「快照」，并附一句说明。这是 Git 的基本单位。</p>
+        </div>
+        <div class="card">
+          <h3><span class="dot"></span>分支 · Branch</h3>
+          <p>一条独立的开发线。新功能先在分支上做，稳定后再合并，互不干扰。</p>
+        </div>
+        <div class="card">
+          <h3><span class="dot"></span>远程 · Remote</h3>
+          <p>指向 GitHub 上那个仓库的「地址」。push 是上传，pull 是下载同步。</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- 实战演练 -->
+    <section id="lab">
+      <h2>实战演练：把一个项目推上 GitHub</h2>
+      <p class="lead">下面是模拟终端。点「下一步」，看一条条命令是怎么把本地项目送上 GitHub 的。每一步的说明在左侧注释里。</p>
+      <div class="term">
+        <div class="term-bar"><i></i><i></i><i></i><em>terminal — git workflow demo</em></div>
+        <pre id="termOut"><span class="c"># 跟着点，看看每步发生了什么</span>
+<span class="g" id="prompt">$ <span class="cursor"></span></span></pre>
+      </div>
+      <div class="toolbar">
+        <button class="btn" id="btnNext" onclick="nextStep()">▶ 下一步</button>
+        <button class="btn ghost" onclick="resetLab()">↺ 重新演练</button>
+      </div>
+    </section>
+
+    <!-- 命令速查 -->
+    <section id="commands">
+      <h2>常用命令速查</h2>
+      <div class="card" style="padding: 6px 10px;">
+        <table class="tbl">
+          <tr><th>命令</th><th>作用</th></tr>
+          <tr><td><code>git init</code></td><td>把当前文件夹变成一个 Git 仓库</td></tr>
+          <tr><td><code>git status</code></td><td>查看当前有哪些改动、处于什么状态</td></tr>
+          <tr><td><code>git add .</code></td><td>把所有改动加入暂存区</td></tr>
+          <tr><td><code>git commit -m "说明"</code></td><td>提交一个版本</td></tr>
+          <tr><td><code>git push</code></td><td>把本地提交推送到 GitHub</td></tr>
+          <tr><td><code>git pull</code></td><td>从 GitHub 拉取最新内容到本地</td></tr>
+          <tr><td><code>git clone &lt;地址&gt;</code></td><td>把远程仓库完整复制到本地</td></tr>
+          <tr><td><code>git branch</code></td><td>查看 / 新建分支</td></tr>
+          <tr><td><code>git log</code></td><td>查看提交历史</td></tr>
+        </table>
+      </div>
+    </section>
+
+    <!-- 网页操作 -->
+    <section id="web" class="accent2">
+      <h2>在 GitHub 网页上做这些事</h2>
+      <div class="grid">
+        <div class="card">
+          <h3><span class="num">1</span>新建仓库</h3>
+          <p>右上角 <code>+</code> → <code>New repository</code>，填名字、选 Public / Private，点 Create。</p>
+        </div>
+        <div class="card">
+          <h3><span class="num">2</span>上传文件</h3>
+          <p>进入仓库 → <code>Add file</code> → <code>Upload files</code>，拖文件进去后提交。</p>
+        </div>
+        <div class="card">
+          <h3><span class="num">3</span>发起 Pull Request</h3>
+          <p>分支改完后，网页上点 <code>Compare &amp; pull request</code>，请别人审阅合并。</p>
+        </div>
+        <div class="card">
+          <h3><span class="num">4</span>开 Issues</h3>
+          <p><code>Issues</code> 标签里提问题、报 bug、讨论需求，相当于项目留言板。</p>
+        </div>
+        <div class="card">
+          <h3><span class="num">5</span>免费建站</h3>
+          <p><code>Settings → Pages</code> 把仓库发布成静态网站，得到 <code>xxx.github.io/仓库名</code> 链接。</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- 小测验 -->
+    <section id="quiz">
+      <h2>小测验</h2>
+      <p class="lead">点选答案，立刻知道对错。</p>
+
+      <div class="quiz-q" data-ans="0">
+        <p class="q">1. 把改动「打包成一个版本」的命令是？</p>
+        <button class="quiz-opt" onclick="pick(this,0)">git commit</button>
+        <button class="quiz-opt" onclick="pick(this,0)">git add</button>
+        <button class="quiz-opt" onclick="pick(this,0)">git push</button>
+        <p class="quiz-fb" id="fb0"></p>
+      </div>
+
+      <div class="quiz-q" data-ans="2">
+        <p class="q">2. 把本地提交「上传到 GitHub」靠哪个命令？</p>
+        <button class="quiz-opt" onclick="pick(this,1)">git pull</button>
+        <button class="quiz-opt" onclick="pick(this,1)">git init</button>
+        <button class="quiz-opt" onclick="pick(this,1)">git push</button>
+        <p class="quiz-fb" id="fb1"></p>
+      </div>
+
+      <div class="quiz-q" data-ans="0">
+        <p class="q">3. <code>git clone &lt;地址&gt;</code> 的作用是？</p>
+        <button class="quiz-opt" onclick="pick(this,2)">把远程仓库完整复制到本地</button>
+        <button class="quiz-opt" onclick="pick(this,2)">把本地仓库上传到远程</button>
+        <button class="quiz-opt" onclick="pick(this,2)">删除一个仓库</button>
+        <p class="quiz-fb" id="fb2"></p>
+      </div>
+
+      <div class="quiz-q" data-ans="1">
+        <p class="q">4. 分支（branch）的主要用途是？</p>
+        <button class="quiz-opt" onclick="pick(this,3)">给文件重命名</button>
+        <button class="quiz-opt" onclick="pick(this,3)">隔离开发、并行改不同功能</button>
+        <button class="quiz-opt" onclick="pick(this,3)">压缩文件体积</button>
+        <p class="quiz-fb" id="fb3"></p>
+      </div>
+
+      <button class="btn ghost" onclick="resetQuiz()">↺ 重做测验</button>
+    </section>
+
+  </div>
+</main>
+
+<footer>
+  <div class="wrap">
+    <span>GitHub 上手指南 · 交互式教程</span>
+    <span>单文件静态页 · 无外部依赖</span>
+  </div>
+</footer>
+
+<script>
+  // ===== 终端演练 =====
+  var steps = [
+    { c: "git init", note: "在当前文件夹初始化一个本地 Git 仓库", out: "Initialized empty Git repository in my-project/.git/" },
+    { c: "git status", note: "查看状态：哪些文件还没被追踪", out: "On branch main\nNo commits yet\nUntracked files:\n  index.html" },
+    { c: "git add .", note: "把所有改动加入「暂存区」，准备提交", out: "" },
+    { c: "git commit -m \"first commit\"", note: "把暂存的改动打包成一个版本", out: "[main (root-commit) a1b2c3d] first commit\n 1 file changed, 120 insertions(+)" },
+    { c: "git remote add origin https://github.com/you/my-project.git", note: "把本地仓库和 GitHub 上的远程仓库关联", out: "" },
+    { c: "git push -u origin main", note: "把本地 main 分支推送到 GitHub", out: "Enumerating objects: 5, done.\nTo https://github.com/you/my-project.git\n * [new branch]      main -> main" }
+  ];
+  var stepIdx = 0;
+  var termEl = document.getElementById("termOut");
+  var btnEl = document.getElementById("btnNext");
+
+  function nextStep() {
+    if (stepIdx >= steps.length) return;
+    var s = steps[stepIdx];
+    var promptEl = document.getElementById("prompt");
+    if (promptEl) promptEl.remove();
+    var html = '<span class="c"># ' + s.note + '</span>\n' +
+               '<span class="g">$</span> <span class="y">' + escapeHtml(s.c) + '</span>\n' +
+               (s.out ? '<span class="ok">' + escapeHtml(s.out) + '</span>\n' : '');
+    termEl.insertAdjacentHTML("beforeend", html);
+    stepIdx++;
+    if (stepIdx >= steps.length) {
+      termEl.insertAdjacentHTML("beforeend", '\n<span class="ok">✓ 完成！打开 https://github.com/you/my-project 就能看到你的项目了。</span>\n');
+      btnEl.disabled = true;
+      btnEl.textContent = "✓ 已完成";
+    } else {
+      termEl.insertAdjacentHTML("beforeend", '<span class="g" id="prompt">$ <span class="cursor"></span></span>');
+    }
+  }
+
+  function resetLab() {
+    stepIdx = 0;
+    termEl.innerHTML = '<span class="c"># 跟着点，看看每步发生了什么</span>\n<span class="g" id="prompt">$ <span class="cursor"></span></span>';
+    btnEl.disabled = false;
+    btnEl.textContent = "▶ 下一步";
+  }
+
+  function escapeHtml(str) {
+    return str.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
+  }
+
+  // ===== 测验 =====
+  var EXPLAIN = [
+    "对。commit 就是把暂存区的改动保存为一个版本；add 只是放入暂存区，push 是上传到远程。",
+    "对。push 负责把本地提交推送到 GitHub，pull 则是从远程拉取。",
+    "对。clone 是把远程仓库完整复制（含历史）到本地，这是拿到一个已有项目最常用的方式。",
+    "对。分支让你在不影响主线的同时并行开发，做完再合并。"
+  ];
+
+  function pick(btn, qIndex) {
+    var wrap = btn.parentElement;
+    if (wrap.dataset.done) return;
+    var correct = parseInt(wrap.dataset.ans, 10);
+    var opts = Array.from(wrap.querySelectorAll(".quiz-opt"));
+    var btnIndex = opts.indexOf(btn);
+    opts.forEach(function (o, i) {
+      o.classList.add("locked");
+      if (i === correct) o.classList.add("correct");
+    });
+    var isRight = btnIndex === correct;
+    if (!isRight) btn.classList.add("wrong");
+    var fb = document.getElementById("fb" + qIndex);
+    fb.textContent = (isRight ? "✅ " : "❌ ") + EXPLAIN[qIndex];
+    fb.className = "quiz-fb show " + (isRight ? "ok" : "no");
+    wrap.dataset.done = "1";
+  }
+
+  function resetQuiz() {
+    document.querySelectorAll(".quiz-q").forEach(function (q) {
+      q.dataset.done = "";
+      q.querySelectorAll(".quiz-opt").forEach(function (o) {
+        o.className = "quiz-opt";
+      });
+      var fb = q.querySelector(".quiz-fb");
+      fb.className = "quiz-fb";
+      fb.textContent = "";
+    });
+  }
+</script>
+
+</body>
+</html>
