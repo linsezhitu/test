@@ -1,0 +1,442 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>如何启用 GitHub Pages · 交互式教程</title>
+<style>
+  :root {
+    --bg: #0f1420;
+    --bg-soft: #0a0f19;
+    --card: #1a2130;
+    --line: #2c3548;
+    --accent: #5b8cff;
+    --accent-2: #b07cff;
+    --good: #28c840;
+    --bad: #ff5f57;
+    --text: #c6cfdd;
+    --dim: #7c8ba0;
+    --head: #ffffff;
+    --radius: 14px;
+  }
+  @media (prefers-color-scheme: light) {
+    :root {
+      --bg: #f5f7fb;
+      --bg-soft: #ffffff;
+      --card: #ffffff;
+      --line: #dde4ee;
+      --accent: #2f6bff;
+      --accent-2: #7a3fe0;
+      --text: #3c4a5c;
+      --dim: #6b7a8d;
+      --head: #0f1420;
+    }
+  }
+  * { box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body {
+    margin: 0;
+    background: var(--bg);
+    color: var(--text);
+    font-family: "Segoe UI", "Microsoft YaHei", system-ui, -apple-system, sans-serif;
+    font-size: 16px;
+    line-height: 1.75;
+    -webkit-font-smoothing: antialiased;
+  }
+  a { color: var(--accent); text-decoration: none; }
+  a:hover { text-decoration: underline; }
+  code {
+    font-family: "Cascadia Mono", Consolas, monospace;
+    font-size: 0.88em;
+    background: var(--card);
+    border: 1px solid var(--line);
+    border-radius: 5px;
+    padding: 0.1em 0.42em;
+    color: var(--head);
+  }
+
+  .wrap { max-width: 1080px; margin: 0 auto; padding: 0 24px; }
+
+  nav {
+    position: sticky; top: 0; z-index: 20;
+    background: color-mix(in srgb, var(--bg) 88%, transparent);
+    backdrop-filter: blur(12px);
+    border-bottom: 1px solid var(--line);
+  }
+  nav .wrap { display: flex; align-items: center; gap: 22px; height: 62px; }
+  nav .brand { font-weight: 700; color: var(--head); }
+  nav .brand span { color: var(--accent); }
+  nav ul { display: flex; gap: 20px; list-style: none; margin: 0 0 0 auto; padding: 0; }
+  nav a { color: var(--dim); font-size: 14.5px; }
+  nav a:hover { color: var(--accent); text-decoration: none; }
+  @media (max-width: 720px) { nav ul { display: none; } }
+
+  header.hero { position: relative; overflow: hidden; border-bottom: 1px solid var(--line); }
+  .hero::before, .hero::after { content: ""; position: absolute; border-radius: 50%; pointer-events: none; }
+  .hero::before {
+    width: 420px; height: 420px; right: -120px; top: -190px;
+    background: radial-gradient(circle, var(--accent), transparent 68%); opacity: 0.22;
+  }
+  .hero::after {
+    width: 300px; height: 300px; left: -110px; bottom: -170px;
+    background: radial-gradient(circle, var(--accent-2), transparent 68%); opacity: 0.15;
+  }
+  .hero .wrap { position: relative; z-index: 1; padding-top: 62px; padding-bottom: 56px; }
+  .hero h1 { margin: 0; font-size: clamp(30px, 5vw, 44px); color: var(--head); letter-spacing: -0.5px; line-height: 1.15; }
+  .hero .role { margin: 8px 0 0; color: var(--accent); font-size: 15px; letter-spacing: 0.6px; }
+  .hero .intro { margin: 14px 0 0; max-width: 66ch; }
+  .back { display: inline-block; margin-top: 18px; font-size: 14px; }
+  .badges { display: flex; flex-wrap: wrap; gap: 9px; margin-top: 16px; }
+  .badge { font-size: 13px; color: var(--text); background: var(--card); border: 1px solid var(--line); border-radius: 999px; padding: 4px 13px; }
+
+  main .wrap { padding-top: 20px; padding-bottom: 40px; }
+  section { padding: 40px 0 8px; }
+  section > h2 {
+    display: flex; align-items: center; gap: 12px;
+    margin: 0 0 22px; font-size: 21px; color: var(--head); font-weight: 700;
+  }
+  section > h2::before { content: ""; width: 5px; height: 21px; border-radius: 3px; background: var(--accent); flex: 0 0 auto; }
+  section.accent2 > h2::before { background: var(--accent-2); }
+  .lead { margin: -10px 0 20px; color: var(--dim); font-size: 14.8px; }
+
+  .grid { display: grid; gap: 18px; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); }
+  .card {
+    background: var(--card); border: 1px solid var(--line);
+    border-radius: var(--radius); padding: 22px 24px;
+    transition: transform .18s ease, border-color .18s ease;
+  }
+  .card:hover { transform: translateY(-2px); border-color: var(--accent); }
+  .card h3 { margin: 0 0 8px; font-size: 16.5px; color: var(--head); display: flex; align-items: center; gap: 9px; }
+  .card p { margin: 0; font-size: 14.6px; }
+  .card ul { margin: 6px 0 0; padding-left: 18px; font-size: 14.6px; }
+  .card li { margin: 4px 0; }
+  .card li::marker { color: var(--accent); }
+
+  .num {
+    display: inline-grid; place-items: center; width: 26px; height: 26px; flex: 0 0 auto;
+    border-radius: 8px; background: linear-gradient(140deg, var(--accent), var(--accent-2));
+    color: #fff; font-size: 14px; font-weight: 700;
+  }
+  .okmark { color: var(--good); font-weight: 700; }
+
+  /* steps */
+  .steps { display: flex; flex-direction: column; gap: 14px; }
+  .step {
+    display: flex; gap: 16px; align-items: flex-start;
+    background: var(--card); border: 1px solid var(--line); border-radius: var(--radius);
+    padding: 20px 24px; transition: border-color .18s ease, transform .18s ease;
+  }
+  .step:hover { border-color: var(--accent); transform: translateX(2px); }
+  .step .num { margin-top: 2px; }
+  .step h3 { margin: 0 0 6px; font-size: 16.5px; color: var(--head); }
+  .step p { margin: 0; font-size: 14.6px; }
+  .step .hint { margin-top: 6px; font-size: 13.5px; color: var(--dim); }
+  .step .hint code { font-size: 0.85em; }
+
+  /* url generator */
+  .gen {
+    background: var(--card); border: 1px solid var(--line); border-radius: var(--radius);
+    padding: 26px 26px;
+  }
+  .gen .row { display: flex; gap: 12px; flex-wrap: wrap; align-items: center; }
+  .gen input {
+    background: var(--bg-soft); border: 1px solid var(--line); border-radius: 9px;
+    padding: 11px 14px; font-size: 15px; color: var(--head); font-family: inherit; min-width: 180px;
+  }
+  .gen input:focus { outline: none; border-color: var(--accent); }
+  .gen label { font-size: 13.5px; color: var(--dim); display: block; margin-bottom: 4px; }
+  .gen .field { flex: 1 1 200px; }
+  .urlbox {
+    margin-top: 18px; display: flex; gap: 10px; align-items: center; flex-wrap: wrap;
+    background: var(--bg-soft); border: 1px dashed var(--line); border-radius: 10px; padding: 14px 16px;
+  }
+  .urlbox .url {
+    font-family: "Cascadia Mono", Consolas, monospace; font-size: 15px;
+    color: var(--accent); word-break: break-all; flex: 1;
+  }
+
+  .btn {
+    background: linear-gradient(140deg, var(--accent), var(--accent-2));
+    color: #fff; border: none; border-radius: 9px; padding: 10px 22px;
+    font-size: 14.5px; font-weight: 600; cursor: pointer; font-family: inherit;
+    transition: filter .15s ease, transform .15s ease;
+  }
+  .btn:hover { filter: brightness(1.08); transform: translateY(-1px); }
+  .btn.ghost { background: var(--card); color: var(--text); border: 1px solid var(--line); font-weight: 500; }
+  .btn.ghost:hover { border-color: var(--accent); color: var(--head); }
+
+  /* quiz */
+  .quiz-q { margin: 0 0 20px; }
+  .quiz-q .q { font-size: 15.5px; color: var(--head); font-weight: 600; margin: 0 0 4px; }
+  .quiz-opt {
+    display: block; width: 100%; text-align: left;
+    background: var(--card); border: 1px solid var(--line); border-radius: 10px;
+    padding: 11px 16px; margin: 8px 0; cursor: pointer;
+    font-size: 14.6px; color: var(--text); font-family: inherit;
+    transition: border-color .15s ease, color .15s ease;
+  }
+  .quiz-opt:hover:not(.locked) { border-color: var(--accent); }
+  .quiz-opt.correct { border-color: var(--good); color: var(--good); }
+  .quiz-opt.wrong { border-color: var(--bad); color: var(--bad); }
+  .quiz-opt.locked { cursor: default; opacity: 0.82; }
+  .quiz-fb { display: none; margin: 4px 0 12px; font-size: 14px; }
+  .quiz-fb.show { display: block; }
+  .quiz-fb.ok { color: var(--good); }
+  .quiz-fb.no { color: var(--bad); }
+
+  footer { border-top: 1px solid var(--line); color: var(--dim); font-size: 13.5px; }
+  footer .wrap { display: flex; justify-content: space-between; gap: 16px; flex-wrap: wrap; padding-top: 24px; padding-bottom: 30px; }
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="wrap">
+    <div class="brand">GitHub <span>Pages</span></div>
+    <ul>
+      <li><a href="#prepare">前提</a></li>
+      <li><a href="#steps">操作步骤</a></li>
+      <li><a href="#gen">网址生成器</a></li>
+      <li><a href="#note">注意事项</a></li>
+      <li><a href="#quiz">小测验</a></li>
+    </ul>
+  </div>
+</nav>
+
+<header class="hero">
+  <div class="wrap">
+    <h1>如何启用 GitHub Pages</h1>
+    <p class="role">INTERACTIVE TUTORIAL · 把网页发布成公网网址</p>
+    <p class="intro">
+      上一篇讲完了 Git 和 GitHub 的基础，这一篇教你把自己的网页「发布上线」——
+      用 GitHub Pages 免费得到一个 <code>你的用户名.github.io/仓库名/</code> 这样的公网网址。
+      跟着下面的步骤点一遍，再试试网址生成器，你就懂了。
+    </p>
+    <a class="back" href="index.html">← 返回 GitHub 上手指南</a>
+  </div>
+</header>
+
+<main>
+  <div class="wrap">
+
+    <section id="prepare">
+      <h2>先满足三个前提</h2>
+      <div class="grid">
+        <div class="card">
+          <h3><span class="num">1</span>仓库是 Public</h3>
+          <p>免费账户下，GitHub Pages 只能用于公开仓库。私有仓库要 Pro 才支持 Pages。</p>
+        </div>
+        <div class="card">
+          <h3><span class="num">2</span>网页文件已推送</h3>
+          <p>仓库里要有 <code>index.html</code>（或 README 自动生成页），并已经 push 到 GitHub。</p>
+        </div>
+        <div class="card">
+          <h3><span class="num">3</span>记住两个名字</h3>
+          <p>你的用户名、仓库名。网址格式由它们决定，见下方的网址生成器。</p>
+        </div>
+      </div>
+    </section>
+
+    <section id="steps">
+      <h2>六步操作</h2>
+      <p class="lead">在 GitHub 网页上点几下就能完成，不需要命令行。</p>
+      <div class="steps">
+        <div class="step">
+          <span class="num">1</span>
+          <div>
+            <h3>打开仓库的 Settings</h3>
+            <p>进入你的仓库页面，点顶部右侧的 <code>Settings</code> 标签。</p>
+          </div>
+        </div>
+        <div class="step">
+          <span class="num">2</span>
+          <div>
+            <h3>找到 Pages</h3>
+            <p>左侧边栏往下滚，在 <code>Code and automation</code> 分组里点 <code>Pages</code>。</p>
+          </div>
+        </div>
+        <div class="step">
+          <span class="num">3</span>
+          <div>
+            <h3>选择发布来源</h3>
+            <p><code>Source</code> 下拉选 <code>Deploy from a branch</code>（从分支部署）。</p>
+          </div>
+        </div>
+        <div class="step">
+          <span class="num">4</span>
+          <div>
+            <h3>选分支和目录</h3>
+            <p>Branch 选 <code>main</code>，目录选 <code>/ (root)</code>（网页在根目录）或 <code>/docs</code>（网页在 docs 文件夹）。</p>
+            <p class="hint">把 <code>index.html</code> 放在仓库根目录，这里就选 <code>/ (root)</code>。</p>
+          </div>
+        </div>
+        <div class="step">
+          <span class="num">5</span>
+          <div>
+            <h3>点 Save</h3>
+            <p>保存后，GitHub 会自动开始构建部署。</p>
+          </div>
+        </div>
+        <div class="step">
+          <span class="num">6</span>
+          <div>
+            <h3>等待并访问</h3>
+            <p>首次构建通常要 <strong>1～2 分钟</strong>。完成后页面会显示你的网址，浏览器打开即可。</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="gen" class="accent2">
+      <h2>网址生成器</h2>
+      <p class="lead">填上你的用户名和仓库名，下面会实时生成你的 Pages 网址。</p>
+      <div class="gen">
+        <div class="row">
+          <div class="field">
+            <label for="user">GitHub 用户名</label>
+            <input id="user" type="text" placeholder="例如 linsezhitu" oninput="updateUrl()">
+          </div>
+          <div class="field">
+            <label for="repo">仓库名</label>
+            <input id="repo" type="text" placeholder="例如 test" oninput="updateUrl()">
+          </div>
+        </div>
+        <div class="urlbox">
+          <span class="url" id="urlOut">https://你的用户名.github.io/你的仓库名/</span>
+          <button class="btn ghost" onclick="copyUrl()">复制</button>
+        </div>
+      </div>
+    </section>
+
+    <section id="note">
+      <h2>几个注意事项</h2>
+      <div class="grid">
+        <div class="card">
+          <h3>⚠ 首次要等一会</h3>
+          <p>第一次构建通常 1～2 分钟，之后每次 push 会自动重新构建，几十秒内生效。别急着刷新以为坏了。</p>
+        </div>
+        <div class="card">
+          <h3>网址是固定的</h3>
+          <p>格式永远是 <code>用户名.github.io/仓库名/</code>，一个用户一个用户名主页，无法自定义子路径。</p>
+        </div>
+        <div class="card">
+          <h3>支持自定义域名</h3>
+          <p>有自己的域名？可以在 Pages 设置里绑定，再按提示配置 CNAME 即可。</p>
+        </div>
+        <div class="card">
+          <h3>只适合静态网页</h3>
+          <p>Pages 只能托管静态内容（HTML/CSS/JS），不能跑后端、数据库或服务端程序。</p>
+        </div>
+      </div>
+    </section>
+
+    <section id="quiz" class="accent2">
+      <h2>小测验</h2>
+      <p class="lead">点选答案，立刻知道对错。</p>
+
+      <div class="quiz-q" data-ans="0">
+        <p class="q">1. 免费账户下，GitHub Pages 可以用于哪种仓库？</p>
+        <button class="quiz-opt" onclick="pick(this,0)">Public 公开仓库</button>
+        <button class="quiz-opt" onclick="pick(this,0)">任意私有仓库</button>
+        <button class="quiz-opt" onclick="pick(this,0)">只有企业仓库</button>
+        <p class="quiz-fb" id="fb0"></p>
+      </div>
+
+      <div class="quiz-q" data-ans="1">
+        <p class="q">2. 网页文件放在仓库根目录，发布目录应该选？</p>
+        <button class="quiz-opt" onclick="pick(this,1)">/docs</button>
+        <button class="quiz-opt" onclick="pick(this,1)">/ (root)</button>
+        <button class="quiz-opt" onclick="pick(this,1)">/html</button>
+        <p class="quiz-fb" id="fb1"></p>
+      </div>
+
+      <div class="quiz-q" data-ans="2">
+        <p class="q">3. 用户名 user、仓库名 my-site，Pages 网址是？</p>
+        <button class="quiz-opt" onclick="pick(this,2)">https://github.com/user/my-site/</button>
+        <button class="quiz-opt" onclick="pick(this,2)">https://user.my-site.github.io/</button>
+        <button class="quiz-opt" onclick="pick(this,2)">https://user.github.io/my-site/</button>
+        <p class="quiz-fb" id="fb2"></p>
+      </div>
+
+      <button class="btn ghost" onclick="resetQuiz()">↺ 重做测验</button>
+    </section>
+
+  </div>
+</main>
+
+<footer>
+  <div class="wrap">
+    <span>如何启用 GitHub Pages · 交互式教程</span>
+    <span>单文件静态页 · 无外部依赖</span>
+  </div>
+</footer>
+
+<script>
+  // ===== 网址生成器 =====
+  function updateUrl() {
+    var u = document.getElementById("user").value.trim();
+    var r = document.getElementById("repo").value.trim();
+    var out = document.getElementById("urlOut");
+    if (u && r) {
+      out.textContent = "https://" + u + ".github.io/" + r + "/";
+    } else {
+      out.textContent = "https://你的用户名.github.io/你的仓库名/";
+    }
+  }
+
+  function copyUrl() {
+    var text = document.getElementById("urlOut").textContent;
+    var btn = event.target;
+    var done = function () {
+      var old = btn.textContent;
+      btn.textContent = "已复制 ✓";
+      setTimeout(function () { btn.textContent = old; }, 1500);
+    };
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      navigator.clipboard.writeText(text).then(done).catch(done);
+    } else {
+      // 降级：老浏览器
+      var ta = document.createElement("textarea");
+      ta.value = text; document.body.appendChild(ta); ta.select();
+      try { document.execCommand("copy"); } catch (e) {}
+      document.body.removeChild(ta); done();
+    }
+  }
+
+  // ===== 测验 =====
+  var EXPLAIN = [
+    "对。免费账户下 Pages 只能用于公开仓库；私有仓库需要 Pro 计划。",
+    "对。网页文件在仓库根目录就选 / (root)；放在 docs 文件夹才选 /docs。",
+    "对。格式是 用户名.github.io/仓库名/，user 是用户名、my-site 是仓库名。"
+  ];
+
+  function pick(btn, qIndex) {
+    var wrap = btn.parentElement;
+    if (wrap.dataset.done) return;
+    var correct = parseInt(wrap.dataset.ans, 10);
+    var opts = Array.from(wrap.querySelectorAll(".quiz-opt"));
+    var btnIndex = opts.indexOf(btn);
+    opts.forEach(function (o, i) {
+      o.classList.add("locked");
+      if (i === correct) o.classList.add("correct");
+    });
+    var isRight = btnIndex === correct;
+    if (!isRight) btn.classList.add("wrong");
+    var fb = document.getElementById("fb" + qIndex);
+    fb.textContent = (isRight ? "✅ " : "❌ ") + EXPLAIN[qIndex];
+    fb.className = "quiz-fb show " + (isRight ? "ok" : "no");
+    wrap.dataset.done = "1";
+  }
+
+  function resetQuiz() {
+    document.querySelectorAll(".quiz-q").forEach(function (q) {
+      q.dataset.done = "";
+      q.querySelectorAll(".quiz-opt").forEach(function (o) { o.className = "quiz-opt"; });
+      var fb = q.querySelector(".quiz-fb");
+      fb.className = "quiz-fb"; fb.textContent = "";
+    });
+  }
+</script>
+
+</body>
+</html>
