@@ -67,7 +67,14 @@
   nav .wrap { display: flex; align-items: center; gap: 22px; height: 62px; }
   nav .brand { font-weight: 700; color: var(--head); letter-spacing: 0.2px; }
   nav .brand span { color: var(--accent); }
-  nav ul { display: flex; gap: 20px; list-style: none; margin: 0 0 0 auto; padding: 0; }
+  nav ul { display: flex; gap: 20px; list-style: none; margin: 0; padding: 0; }
+  .back-btn {
+    margin-left: auto; display: inline-flex; align-items: center; gap: 6px;
+    background: linear-gradient(140deg, var(--accent), var(--accent-2));
+    color: #fff; border-radius: 9px; padding: 8px 16px;
+    font-size: 14px; font-weight: 600; text-decoration: none; white-space: nowrap;
+  }
+  .back-btn:hover { filter: brightness(1.08); color: #fff; text-decoration: none; }
   nav a { color: var(--dim); font-size: 14.5px; }
   nav a:hover { color: var(--accent); text-decoration: none; }
   @media (max-width: 720px) { nav ul { display: none; } }
@@ -237,6 +244,7 @@
       <li><a href="#web">网页操作</a></li>
       <li><a href="#quiz">小测验</a></li>
     </ul>
+    <a class="back-btn" href="../index.html">← 返回首页</a>
   </div>
 </nav>
 
@@ -347,24 +355,19 @@
     <section id="web" class="accent2">
       <h2>在 GitHub 网页上做这些事</h2>
       <div class="grid">
-        <a class="card" href="create-repo.html" target="_blank" rel="noopener">
-          <h3><span class="num">1</span>新建仓库</h3>
+        <a class="card" href="create-repo.html"          <h3><span class="num">1</span>新建仓库</h3>
           <p>右上角 <code>+</code> → <code>New repository</code>，填名字、选 Public / Private，点 Create。</p>
         </a>
-        <a class="card" href="upload-files.html" target="_blank" rel="noopener">
-          <h3><span class="num">2</span>上传文件</h3>
+        <a class="card" href="upload-files.html"          <h3><span class="num">2</span>上传文件</h3>
           <p>进入仓库 → <code>Add file</code> → <code>Upload files</code>，拖文件进去后提交。</p>
         </a>
-        <a class="card" href="pull-request.html" target="_blank" rel="noopener">
-          <h3><span class="num">3</span>发起 Pull Request</h3>
+        <a class="card" href="pull-request.html"          <h3><span class="num">3</span>发起 Pull Request</h3>
           <p>分支改完后，网页上点 <code>Compare &amp; pull request</code>，请别人审阅合并。</p>
         </a>
-        <a class="card" href="issues.html" target="_blank" rel="noopener">
-          <h3><span class="num">4</span>开 Issues</h3>
+        <a class="card" href="issues.html"          <h3><span class="num">4</span>开 Issues</h3>
           <p><code>Issues</code> 标签里提问题、报 bug、讨论需求，相当于项目留言板。</p>
         </a>
-        <a class="card" href="github-pages.html" target="_blank" rel="noopener">
-          <h3><span class="num">5</span>免费建站</h3>
+        <a class="card" href="github-pages.html"          <h3><span class="num">5</span>免费建站</h3>
           <p><code>Settings → Pages</code> 把仓库发布成静态网站，得到 <code>xxx.github.io/仓库名</code> 链接。</p>
         </a>
       </div>
