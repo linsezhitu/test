@@ -19,6 +19,10 @@
 | 文件 | 说明 |
 | --- | --- |
 | [`index.html`](index.html) | GitHub 基础入门（概念、终端演练、命令速查、小测验） |
+| [`create-repo.html`](create-repo.html) | 如何新建仓库：六步操作 + 小测验 |
+| [`upload-files.html`](upload-files.html) | 如何上传文件：五步操作 + 小测验 |
+| [`pull-request.html`](pull-request.html) | 如何发起 Pull Request：六步操作 + 小测验 |
+| [`issues.html`](issues.html) | 如何开 Issues：五步操作 + 小测验 |
 | [`github-pages.html`](github-pages.html) | 如何启用 GitHub Pages：六步操作 + 网址生成器 + 小测验 |
 
 ## 特性

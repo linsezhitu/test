@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>如何上传文件 · GitHub 交互式教程</title>
+<style>
+  :root {
+    --bg: #0f1420; --bg-soft: #0a0f19; --card: #1a2130; --line: #2c3548;
+    --accent: #5b8cff; --accent-2: #b07cff; --good: #28c840; --bad: #ff5f57;
+    --text: #c6cfdd; --dim: #7c8ba0; --head: #ffffff; --radius: 14px;
+  }
+  @media (prefers-color-scheme: light) {
+    :root {
+      --bg: #f5f7fb; --bg-soft: #ffffff; --card: #ffffff; --line: #dde4ee;
+      --accent: #2f6bff; --accent-2: #7a3fe0;
+      --text: #3c4a5c; --dim: #6b7a8d; --head: #0f1420;
+    }
+  }
+  * { box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body {
+    margin: 0; background: var(--bg); color: var(--text);
+    font-family: "Segoe UI", "Microsoft YaHei", system-ui, -apple-system, sans-serif;
+    font-size: 16px; line-height: 1.75; -webkit-font-smoothing: antialiased;
+  }
+  a { color: var(--accent); text-decoration: none; }
+  a:hover { text-decoration: underline; }
+  code {
+    font-family: "Cascadia Mono", Consolas, monospace; font-size: 0.88em;
+    background: var(--card); border: 1px solid var(--line); border-radius: 5px;
+    padding: 0.1em 0.42em; color: var(--head);
+  }
+  .wrap { max-width: 1080px; margin: 0 auto; padding: 0 24px; }
+
+  nav {
+    position: sticky; top: 0; z-index: 20;
+    background: color-mix(in srgb, var(--bg) 88%, transparent);
+    backdrop-filter: blur(12px); border-bottom: 1px solid var(--line);
+  }
+  nav .wrap { display: flex; align-items: center; gap: 22px; height: 62px; }
+  nav .brand { font-weight: 700; color: var(--head); }
+  nav .brand span { color: var(--accent); }
+  nav .back { margin-left: auto; font-size: 14.5px; color: var(--dim); }
+  nav .back:hover { color: var(--accent); text-decoration: none; }
+
+  header.hero { position: relative; overflow: hidden; border-bottom: 1px solid var(--line); }
+  .hero::before, .hero::after { content: ""; position: absolute; border-radius: 50%; pointer-events: none; }
+  .hero::before {
+    width: 420px; height: 420px; right: -120px; top: -190px;
+    background: radial-gradient(circle, var(--accent), transparent 68%); opacity: 0.22;
+  }
+  .hero::after {
+    width: 300px; height: 300px; left: -110px; bottom: -170px;
+    background: radial-gradient(circle, var(--accent-2), transparent 68%); opacity: 0.15;
+  }
+  .hero .wrap { position: relative; z-index: 1; padding-top: 62px; padding-bottom: 56px; }
+  .hero h1 { margin: 0; font-size: clamp(30px, 5vw, 44px); color: var(--head); letter-spacing: -0.5px; line-height: 1.15; }
+  .hero .role { margin: 8px 0 0; color: var(--accent); font-size: 15px; letter-spacing: 0.6px; }
+  .hero .intro { margin: 14px 0 0; max-width: 66ch; }
+  .hero .back2 { display: inline-block; margin-top: 18px; font-size: 14px; }
+
+  main .wrap { padding-top: 20px; padding-bottom: 40px; }
+  section { padding: 40px 0 8px; }
+  section > h2 {
+    display: flex; align-items: center; gap: 12px;
+    margin: 0 0 22px; font-size: 21px; color: var(--head); font-weight: 700;
+  }
+  section > h2::before { content: ""; width: 5px; height: 21px; border-radius: 3px; background: var(--accent); flex: 0 0 auto; }
+  .lead { margin: -10px 0 20px; color: var(--dim); font-size: 14.8px; }
+
+  .steps { display: flex; flex-direction: column; gap: 14px; }
+  .step {
+    display: flex; gap: 16px; align-items: flex-start;
+    background: var(--card); border: 1px solid var(--line); border-radius: var(--radius);
+    padding: 20px 24px; transition: border-color .18s ease, transform .18s ease;
+  }
+  .step:hover { border-color: var(--accent); transform: translateX(2px); }
+  .num {
+    display: inline-grid; place-items: center; width: 26px; height: 26px; flex: 0 0 auto;
+    border-radius: 8px; background: linear-gradient(140deg, var(--accent), var(--accent-2));
+    color: #fff; font-size: 14px; font-weight: 700;
+  }
+  .step h3 { margin: 0 0 6px; font-size: 16.5px; color: var(--head); }
+  .step p { margin: 0; font-size: 14.6px; }
+  .step .hint { margin-top: 6px; font-size: 13.5px; color: var(--dim); }
+
+  .quiz-q { margin: 0 0 20px; }
+  .quiz-q .q { font-size: 15.5px; color: var(--head); font-weight: 600; margin: 0 0 4px; }
+  .quiz-opt {
+    display: block; width: 100%; text-align: left;
+    background: var(--card); border: 1px solid var(--line); border-radius: 10px;
+    padding: 11px 16px; margin: 8px 0; cursor: pointer;
+    font-size: 14.6px; color: var(--text); font-family: inherit;
+    transition: border-color .15s ease, color .15s ease;
+  }
+  .quiz-opt:hover:not(.locked) { border-color: var(--accent); }
+  .quiz-opt.correct { border-color: var(--good); color: var(--good); }
+  .quiz-opt.wrong { border-color: var(--bad); color: var(--bad); }
+  .quiz-opt.locked { cursor: default; opacity: 0.82; }
+  .quiz-fb { display: none; margin: 4px 0 12px; font-size: 14px; }
+  .quiz-fb.show { display: block; }
+  .quiz-fb.ok { color: var(--good); }
+  .quiz-fb.no { color: var(--bad); }
+
+  .btn {
+    background: linear-gradient(140deg, var(--accent), var(--accent-2));
+    color: #fff; border: none; border-radius: 9px; padding: 10px 22px;
+    font-size: 14.5px; font-weight: 600; cursor: pointer; font-family: inherit;
+  }
+  .btn:hover { filter: brightness(1.08); }
+  .btn.ghost { background: var(--card); color: var(--text); border: 1px solid var(--line); font-weight: 500; }
+
+  footer { border-top: 1px solid var(--line); color: var(--dim); font-size: 13.5px; }
+  footer .wrap { display: flex; justify-content: space-between; gap: 16px; flex-wrap: wrap; padding-top: 24px; padding-bottom: 30px; }
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="wrap">
+    <div class="brand">上传<span>文件</span></div>
+    <a class="back" href="index.html">← 返回指南</a>
+  </div>
+</nav>
+
+<header class="hero">
+  <div class="wrap">
+    <h1>如何把文件上传到仓库</h1>
+    <p class="role">INTERACTIVE TUTORIAL · 不用命令行，拖拽就能传</p>
+    <p class="intro">
+      不会用命令行没关系，GitHub 网页上就能直接上传文件。把写好的网页、文档、代码
+      拖进去，写一句提交说明，就完成了。
+    </p>
+    <a class="back2" href="index.html">← 返回 GitHub 上手指南</a>
+  </div>
+</header>
+
+<main>
+  <div class="wrap">
+
+    <section id="steps">
+      <h2>五步操作</h2>
+      <div class="steps">
+        <div class="step">
+          <span class="num">1</span>
+          <div><h3>进入你的仓库</h3><p>打开仓库主页，点 <code>Add file</code> 按钮，选 <code>Upload files</code>。</p></div>
+        </div>
+        <div class="step">
+          <span class="num">2</span>
+          <div><h3>拖入或选择文件</h3><p>把文件拖到虚线框里，或点 <code>choose your files</code> 从电脑里选。支持一次传多个文件、甚至整个文件夹。</p></div>
+        </div>
+        <div class="step">
+          <span class="num">3</span>
+          <div><h3>等文件上传完</h3><p>文件会先上传到「暂存区」，在下方列表里能看到每个文件的名称和大小。</p><p class="hint">如果想放到子文件夹，在输入框里填路径即可（如 <code>images/logo.png</code>）。</p></div>
+        </div>
+        <div class="step">
+          <span class="num">4</span>
+          <div><h3>写一句提交说明</h3><p>在 <code>Commit changes</code> 区域填一句说明，例如「添加首页 index.html」。</p></div>
+        </div>
+        <div class="step">
+          <span class="num">5</span>
+          <div><h3>点 Commit changes</h3><p>点绿色按钮提交，文件就正式进入仓库了。回到仓库主页就能看到它们。</p></div>
+        </div>
+      </div>
+    </section>
+
+    <section id="quiz">
+      <h2>小测验</h2>
+      <div class="quiz-q" data-ans="0">
+        <p class="q">1. 网页上传文件的入口是？</p>
+        <button class="quiz-opt" onclick="pick(this,0)">Add file → Upload files</button>
+        <button class="quiz-opt" onclick="pick(this,0)">Settings → Files</button>
+        <button class="quiz-opt" onclick="pick(this,0)">只能命令行上传</button>
+        <p class="quiz-fb" id="fb0"></p>
+      </div>
+      <div class="quiz-q" data-ans="1">
+        <p class="q">2. 提交前，最好先写一句什么？</p>
+        <button class="quiz-opt" onclick="pick(this,1)">密码</button>
+        <button class="quiz-opt" onclick="pick(this,1)">提交说明（commit message）</button>
+        <button class="quiz-opt" onclick="pick(this,1)">仓库描述</button>
+        <p class="quiz-fb" id="fb1"></p>
+      </div>
+      <div class="quiz-q" data-ans="2">
+        <p class="q">3. 网页上传能不能一次传多个文件？</p>
+        <button class="quiz-opt" onclick="pick(this,2)">不能，一次只能一个</button>
+        <button class="quiz-opt" onclick="pick(this,2)">只能传图片</button>
+        <button class="quiz-opt" onclick="pick(this,2)">能，拖多个文件或整个文件夹都行</button>
+        <p class="quiz-fb" id="fb2"></p>
+      </div>
+      <button class="btn ghost" onclick="resetQuiz()">↺ 重做测验</button>
+    </section>
+
+  </div>
+</main>
+
+<footer>
+  <div class="wrap">
+    <span>如何上传文件 · 交互式教程</span>
+    <span>单文件静态页 · 无外部依赖</span>
+  </div>
+</footer>
+
+<script>
+  var EXPLAIN = [
+    "对。Add file → Upload files 是网页上传的标准入口。",
+    "对。提交说明（commit message）帮你以后知道这次改了什么。",
+    "对。网页上传支持一次拖多个文件，甚至整个文件夹。"
+  ];
+  function pick(btn, qIndex) {
+    var wrap = btn.parentElement;
+    if (wrap.dataset.done) return;
+    var correct = parseInt(wrap.dataset.ans, 10);
+    var opts = Array.from(wrap.querySelectorAll(".quiz-opt"));
+    var btnIndex = opts.indexOf(btn);
+    opts.forEach(function (o, i) { o.classList.add("locked"); if (i === correct) o.classList.add("correct"); });
+    var isRight = btnIndex === correct;
+    if (!isRight) btn.classList.add("wrong");
+    var fb = document.getElementById("fb" + qIndex);
+    fb.textContent = (isRight ? "✅ " : "❌ ") + EXPLAIN[qIndex];
+    fb.className = "quiz-fb show " + (isRight ? "ok" : "no");
+    wrap.dataset.done = "1";
+  }
+  function resetQuiz() {
+    document.querySelectorAll(".quiz-q").forEach(function (q) {
+      q.dataset.done = "";
+      q.querySelectorAll(".quiz-opt").forEach(function (o) { o.className = "quiz-opt"; });
+      var fb = q.querySelector(".quiz-fb"); fb.className = "quiz-fb"; fb.textContent = "";
+    });
+  }
+</script>
+</body>
+</html>
