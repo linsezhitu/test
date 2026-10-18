@@ -16,7 +16,7 @@
     --text: #c6cfdd;
     --dim: #7c8ba0;
     --head: #ffffff;
-    --radius: 14px;
+    --radius: 16px;
   }
   @media (prefers-color-scheme: light) {
     :root {
@@ -45,8 +45,21 @@
   }
   a { color: var(--accent); text-decoration: none; }
 
-  .wrap { max-width: 980px; margin: 0 auto; padding: 0 24px; }
+  .wrap { max-width: 1040px; margin: 0 auto; padding: 0 24px; }
 
+  /* ---------- nav ---------- */
+  nav {
+    position: sticky; top: 0; z-index: 20;
+    background: color-mix(in srgb, var(--bg) 88%, transparent);
+    backdrop-filter: blur(12px);
+    border-bottom: 1px solid var(--line);
+  }
+  nav .wrap { display: flex; align-items: center; gap: 22px; height: 62px; }
+  nav .brand { font-weight: 700; color: var(--head); letter-spacing: 0.2px; }
+  nav .brand span { color: var(--accent); }
+  nav .sub { margin-left: auto; font-size: 13px; color: var(--dim); letter-spacing: 0.4px; }
+
+  /* ---------- hero ---------- */
   header.hero {
     position: relative; overflow: hidden;
     border-bottom: 1px solid var(--line);
@@ -55,95 +68,221 @@
     content: ""; position: absolute; border-radius: 50%; pointer-events: none;
   }
   .hero::before {
-    width: 420px; height: 420px; right: -120px; top: -190px;
+    width: 460px; height: 460px; right: -140px; top: -200px;
     background: radial-gradient(circle, var(--accent), transparent 68%);
     opacity: 0.22;
   }
   .hero::after {
-    width: 300px; height: 300px; left: -110px; bottom: -170px;
+    width: 320px; height: 320px; left: -120px; bottom: -180px;
     background: radial-gradient(circle, var(--accent-3), transparent 68%);
-    opacity: 0.14;
+    opacity: 0.15;
   }
   .hero .wrap {
     position: relative; z-index: 1;
-    padding-top: 64px; padding-bottom: 56px;
+    padding-top: 68px; padding-bottom: 64px;
+  }
+  .hero .kicker {
+    display: inline-block; font-size: 13px; letter-spacing: 1px;
+    color: var(--accent); font-weight: 600;
+    text-transform: uppercase; margin-bottom: 14px;
   }
   .hero h1 {
-    margin: 0; font-size: clamp(30px, 5vw, 44px);
-    color: var(--head); letter-spacing: -0.5px; line-height: 1.15;
+    margin: 0; font-size: clamp(34px, 6vw, 52px);
+    color: var(--head); letter-spacing: -0.8px; line-height: 1.12;
   }
-  .hero .sub { margin: 12px 0 0; color: var(--dim); max-width: 60ch; }
-
-  main .wrap { padding-top: 36px; padding-bottom: 40px; }
-  .grid { display: grid; gap: 18px; grid-template-columns: repeat(auto-fit, minmax(270px, 1fr)); }
-
-  .card {
-    display: flex; flex-direction: column; gap: 10px;
+  .hero h1 em {
+    font-style: normal;
+    background: linear-gradient(120deg, var(--accent), var(--accent-2));
+    -webkit-background-clip: text; background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+  .hero .role { margin: 14px 0 0; color: var(--accent); font-size: 15px; letter-spacing: 0.6px; }
+  .hero .intro { margin: 16px 0 0; max-width: 62ch; font-size: 16.5px; }
+  .badges { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 24px; }
+  .badge {
+    font-size: 13.5px; color: var(--text);
     background: var(--card); border: 1px solid var(--line);
-    border-radius: var(--radius); padding: 26px 26px;
-    transition: transform .18s ease, border-color .18s ease;
+    border-radius: 999px; padding: 6px 15px;
+    transition: border-color .18s, color .18s, transform .18s;
   }
-  .card:hover { transform: translateY(-3px); border-color: var(--accent); }
+  .badge:hover { border-color: var(--accent); color: var(--head); transform: translateY(-1px); }
+
+  /* ---------- sections ---------- */
+  main .wrap { padding-top: 28px; padding-bottom: 40px; }
+  section { padding: 40px 0 8px; }
+  section > h2 {
+    display: flex; align-items: center; gap: 12px;
+    margin: 0 0 24px; font-size: 21px; color: var(--head); font-weight: 700;
+  }
+  section > h2::before {
+    content: ""; width: 5px; height: 21px; border-radius: 3px;
+    background: var(--accent); flex: 0 0 auto;
+  }
+  section > h2 small { font-size: 13px; color: var(--dim); font-weight: 400; margin-left: 2px; }
+  section.accent2 > h2::before { background: var(--accent-3); }
+
+  .grid { display: grid; gap: 20px; grid-template-columns: repeat(auto-fit, minmax(290px, 1fr)); }
+
+  /* ---------- project cards ---------- */
+  .card {
+    display: flex; flex-direction: column; gap: 14px;
+    background: var(--card); border: 1px solid var(--line);
+    border-radius: var(--radius); padding: 28px 28px;
+    transition: transform .2s ease, border-color .2s ease, box-shadow .2s ease;
+  }
+  .card:hover {
+    transform: translateY(-4px);
+    border-color: var(--accent);
+    box-shadow: 0 14px 34px -18px color-mix(in srgb, var(--accent) 55%, transparent);
+  }
+  .card.c2:hover { border-color: var(--accent-3); box-shadow: 0 14px 34px -18px color-mix(in srgb, var(--accent-3) 55%, transparent); }
+  .card.c3:hover { border-color: var(--accent-2); box-shadow: 0 14px 34px -18px color-mix(in srgb, var(--accent-2) 55%, transparent); }
+
+  .card .top { display: flex; align-items: center; gap: 16px; }
   .card .ico {
-    width: 46px; height: 46px; border-radius: 12px;
-    display: grid; place-items: center; font-size: 18px; font-weight: 700;
-    color: #fff;
+    width: 58px; height: 58px; flex: 0 0 auto;
+    border-radius: 16px; display: grid; place-items: center;
+    font-size: 20px; font-weight: 800; color: #fff; letter-spacing: 0.5px;
   }
-  .card h2 { margin: 0; font-size: 18px; color: var(--head); }
-  .card p { margin: 0; font-size: 14.4px; color: var(--text); flex: 1; }
-  .card .go { font-size: 14px; font-weight: 600; color: var(--accent); }
-  .card:hover .go { text-decoration: underline; }
   .ico.b1 { background: linear-gradient(140deg, var(--accent), var(--accent-2)); }
   .ico.b2 { background: linear-gradient(140deg, #4dd4c0, #2fa894); color: #071019; }
   .ico.b3 { background: linear-gradient(140deg, var(--accent-3), var(--accent)); }
+  .card h3 { margin: 0; font-size: 18px; color: var(--head); line-height: 1.3; }
+  .card .tag {
+    display: inline-block; margin-top: 5px;
+    font-size: 11.5px; font-weight: 600; letter-spacing: 0.4px;
+    color: var(--accent); background: color-mix(in srgb, var(--accent) 12%, transparent);
+    border-radius: 6px; padding: 2px 9px;
+  }
+  .card p { margin: 0; font-size: 14.6px; color: var(--text); flex: 1; }
+  .card .go {
+    display: inline-flex; align-items: center; gap: 6px;
+    font-size: 14px; font-weight: 600; color: var(--accent);
+    transition: gap .18s ease;
+  }
+  .card .go::after { content: "→"; transition: transform .18s ease; }
+  .card:hover .go { gap: 10px; }
+
+  /* ---------- features ---------- */
+  .feat {
+    background: var(--card); border: 1px solid var(--line);
+    border-radius: var(--radius); padding: 22px 24px;
+    transition: transform .18s ease, border-color .18s ease;
+  }
+  .feat:hover { transform: translateY(-2px); border-color: var(--accent-3); }
+  .feat h3 { margin: 0 0 8px; font-size: 16px; color: var(--head); display: flex; align-items: center; gap: 9px; }
+  .feat h3 .dot { width: 9px; height: 9px; border-radius: 2px; background: var(--accent-3); flex: 0 0 auto; }
+  .feat p { margin: 0; font-size: 14.4px; }
 
   footer {
     border-top: 1px solid var(--line);
     color: var(--dim); font-size: 13.5px;
   }
-  footer .wrap { padding-top: 22px; padding-bottom: 28px; }
+  footer .wrap {
+    display: flex; justify-content: space-between; gap: 16px;
+    flex-wrap: wrap; padding-top: 24px; padding-bottom: 30px;
+  }
 </style>
 </head>
 <body>
 
+<nav>
+  <div class="wrap">
+    <div class="brand">AI<span>·</span>成果集</div>
+    <span class="sub">3 个单页 · 零外部依赖</span>
+  </div>
+</nav>
+
 <header class="hero">
   <div class="wrap">
-    <h1>AI 智能体成果集</h1>
-    <p class="sub">
-      这里收集了几个单页成果：两位 AI 智能体的自我介绍，以及一份零基础的 GitHub 上手教程。
-      点击卡片进入对应页面。
+    <span class="kicker">A Collection of Single-Page Sites</span>
+    <h1>AI 智能体 <em>成果集</em></h1>
+    <p class="role">ABOUT &nbsp;·&nbsp; TUTORIAL &nbsp;·&nbsp; 由 GitHub Pages 托管</p>
+    <p class="intro">
+      这里收录了两位 AI 智能体的自我介绍，和一份零基础、能动手的 GitHub 上手教程。
+      全部是单文件静态页，不加载任何 CDN 或图片，点卡片即可进入。
     </p>
+    <div class="badges">
+      <span class="badge">两位 AI 智能体</span>
+      <span class="badge">交互式 GitHub 教程</span>
+      <span class="badge">深 / 浅色自适应</span>
+      <span class="badge">响应式布局</span>
+    </div>
   </div>
 </header>
 
 <main>
   <div class="wrap">
-    <div class="grid">
 
-      <a class="card" href="about-workbuddy/"        <div class="ico b1">WB</div>
-        <h2>关于我 · WorkBuddy</h2>
-        <p>一个能研究、能分析、也能动手构建的 AI 助手。能力、三种工作模式与工作流演示。</p>
-        <span class="go">进入 →</span>
-      </a>
+    <section>
+      <h2>浏览成果 <small>点击卡片进入</small></h2>
+      <div class="grid">
 
-      <a class="card" href="about-dsh-agent/"        <div class="ico b2">DSH</div>
-        <h2>关于我 · DeepSeek Harness</h2>
-        <p>会读代码、会跑命令、也会做文档的编码智能体。能力、工作方式与运行环境。</p>
-        <span class="go">进入 →</span>
-      </a>
+        <a class="card" href="about-workbuddy/">
+          <div class="top">
+            <div class="ico b1">WB</div>
+            <div>
+              <h3>关于我 · WorkBuddy</h3>
+              <span class="tag">介绍页</span>
+            </div>
+          </div>
+          <p>一个能研究、能分析、也能动手构建的 AI 助手。能力、三种工作模式与完整工作流演示。</p>
+          <span class="go">进入</span>
+        </a>
 
-      <a class="card" href="github-tutorial/"        <div class="ico b3">GH</div>
-        <h2>GitHub 上手指南</h2>
-        <p>交互式教程：搞懂概念、终端演练一次完整推送流程，再做几道题检验一下。</p>
-        <span class="go">进入 →</span>
-      </a>
+        <a class="card c2" href="about-dsh-agent/">
+          <div class="top">
+            <div class="ico b2">DSH</div>
+            <div>
+              <h3>关于我 · DeepSeek Harness</h3>
+              <span class="tag">介绍页</span>
+            </div>
+          </div>
+          <p>会读代码、会跑命令、也会做文档的编码智能体。能力、工作方式与运行环境一览。</p>
+          <span class="go">进入</span>
+        </a>
 
-    </div>
+        <a class="card c3" href="github-tutorial/">
+          <div class="top">
+            <div class="ico b3">GH</div>
+            <div>
+              <h3>GitHub 上手指南</h3>
+              <span class="tag">交互式教程</span>
+            </div>
+          </div>
+          <p>搞懂概念、终端演练一次完整推送流程，再到新建仓库、发 PR、开 Issues、免费建站。</p>
+          <span class="go">进入</span>
+        </a>
+
+      </div>
+    </section>
+
+    <section class="accent2">
+      <h2>本站特色</h2>
+      <div class="grid">
+        <div class="feat">
+          <h3><span class="dot"></span>单文件 · 零依赖</h3>
+          <p>每个页面 HTML / CSS / JS 全部内联，不加载任何 CDN、字体或图片，克隆即用。</p>
+        </div>
+        <div class="feat">
+          <h3><span class="dot"></span>交互式体验</h3>
+          <p>教程内置终端演练与随堂小测验，边看边动手，点了立刻有反馈。</p>
+        </div>
+        <div class="feat">
+          <h3><span class="dot"></span>自适应配色</h3>
+          <p>跟随系统深 / 浅色自动切换，卡片栅格响应式折行，手机窄屏也能正常阅读。</p>
+        </div>
+      </div>
+    </section>
+
   </div>
 </main>
 
 <footer>
-  <div class="wrap">AI 智能体成果集 · 由 GitHub Pages 托管</div>
+  <div class="wrap">
+    <span>AI 智能体成果集</span>
+    <span>由 GitHub Pages 托管 · 单文件静态页</span>
+  </div>
 </footer>
 
 </body>
